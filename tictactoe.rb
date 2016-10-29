@@ -1,24 +1,17 @@
 class Board
 	def initialize
-		@spot1 = 1
-		@spot2 = 2
-		@spot3 = 3
-		@spot4 = 4
-		@spot5 = 5
-		@spot6 = 6
-		@spot7 = 7
-		@spot8 = 8
-		@spot9 = 9
+		@spots = []
+		(1..9).each {|x| @spots.push(x)}
 	end
 
-	attr_accessor :spot1, :spot2, :spot3, :spot4, :spot5, :spot6, :spot7, :spot8, :spot9
+	attr_accessor :spots
 
 	def show
-		puts "#{@spot1} | #{@spot2} | #{@spot3}"
+		puts "#{@spots[0]} | #{@spots[1]} | #{@spots[2]}"
 		puts "---------"
-		puts "#{@spot4} | #{@spot5} | #{@spot6}"
+		puts "#{@spots[3]} | #{@spots[4]} | #{@spots[5]}"
 		puts "---------"
-		puts "#{@spot7} | #{@spot8} | #{@spot9}"
+		puts "#{@spots[6]} | #{@spots[7]} | #{@spots[8]}"
 	end
 
 end
@@ -26,14 +19,14 @@ end
 def tictactoe
 	gameboard = Board.new
 	toggle = 2
+	draw = true
+	win_condition = false
 	if toggle%2 == 0
 		player = "X"
 	else
 		player = "O"
 	end
-	win_condition = false
 	9.times do
-		
 		if toggle%2 == 0
 			player = "X"
 		else
@@ -44,67 +37,30 @@ def tictactoe
 		puts "Player #{player} pick a square!"
 		input = gets.chomp
 		
-		if input == "1" && (gameboard.spot1 == 1)
-			gameboard.spot1="#{player}"
-		elsif input == "2" && (gameboard.spot2 == 2)
-			gameboard.spot2="#{player}"
-		elsif input == "3" && (gameboard.spot3 == 3)
-			gameboard.spot3="#{player}"
-		elsif input == "4" && (gameboard.spot4 == 4)
-			gameboard.spot4="#{player}"
-		elsif input == "5" && (gameboard.spot5 == 5)
-			gameboard.spot5="#{player}"
-		elsif input == "6" && (gameboard.spot6 == 6)
-			gameboard.spot6="#{player}"
-		elsif input == "7" && (gameboard.spot7 == 7)
-			gameboard.spot7="#{player}"
-		elsif input == "8" && (gameboard.spot8 == 8)
-			gameboard.spot8="#{player}"
-		elsif input == "9" && (gameboard.spot9 == 9)
-			gameboard.spot9="#{player}"
+		if gameboard.spots[input.to_i - 1] != ("X" || "O")
+			gameboard.spots[input.to_i - 1] = player
 		else
 			puts "Invalid square, try again"
-			puts gameboard.spot1
 			redo
 		end
 		
 		gameboard.show
-		if gameboard.spot1 == player && gameboard.spot2 == player && gameboard.spot3 == player
-			win_condition = true
-			puts "Player #{player} wins!"
-			break
-		elsif gameboard.spot4 == player && gameboard.spot5 == player && gameboard.spot6 == player
-			win_condition = true
-			puts "Player #{player} wins!"
-			break
-		elsif gameboard.spot7 == player && gameboard.spot8 == player && gameboard.spot9 == player
-			win_condition = true
-			puts "Player #{player} wins!"
-			break
-		elsif gameboard.spot1 == player && gameboard.spot4 == player && gameboard.spot7 == player
-			win_condition = true
-			puts "Player #{player} wins!"
-			break
-		elsif gameboard.spot2 == player && gameboard.spot5 == player && gameboard.spot8 == player
-			win_condition = true
-			puts "Player #{player} wins!"
-			break
-		elsif gameboard.spot3 == player && gameboard.spot6 == player && gameboard.spot9 == player
-			win_condition = true
-			puts "Player #{player} wins!"
-			break
-		elsif gameboard.spot1 == player && gameboard.spot5 == player && gameboard.spot9 == player
-			win_condition = true
-			puts "Player #{player} wins!"
-			break
-		elsif gameboard.spot3 == player && gameboard.spot5 == player && gameboard.spot7 == player
-			win_condition = true
-			puts "Player #{player} wins!"
-			break
-		end
+
+
+		win_condition = true if gameboard.spots[0] == player && gameboard.spots[1] == player && gameboard.spots[2] == player
+		win_condition = true if gameboard.spots[4] == player && gameboard.spots[5] == player && gameboard.spots[6] == player
+		win_condition = true if gameboard.spots[7] == player && gameboard.spots[8] == player && gameboard.spots[9] == player
+		win_condition = true if gameboard.spots[0] == player && gameboard.spots[3] == player && gameboard.spots[6] == player
+		win_condition = true if gameboard.spots[1] == player && gameboard.spots[4] == player && gameboard.spots[7] == player
+		win_condition = true if gameboard.spots[2] == player && gameboard.spots[5] == player && gameboard.spots[8] == player
+		win_condition = true if gameboard.spots[0] == player && gameboard.spots[4] == player && gameboard.spots[8] == player
+		win_condition = true if gameboard.spots[2] == player && gameboard.spots[4] == player && gameboard.spots[6] == player
+		draw = false if win_condition == true
+		break if win_condition == true
+
 		toggle += 1
 
 	end
-
-
+	puts "Draw!" if draw == true
+	puts "Player #{player} wins!" if win_condition == true
 end
